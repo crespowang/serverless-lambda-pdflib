@@ -1,0 +1,28 @@
+{
+  "name": "serverless-lambda-pdflib",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:crespowang/serverless-lambda-pdflib.git",
+  "author": "Crespo Wang <crespo.wang@inquisitive.com>",
+  "license": "MIT",
+  "scripts": {
+    "serverless": "sls offline start --port 3003 --stage dev --basePath / --prefix dev --location .webpack/service"
+  },
+  "dependencies": {
+    "@middy/core": "^1.0.0-beta.6",
+    "@middy/do-not-wait-for-empty-event-loop": "^1.0.0-beta.6",
+    "@types/aws-lambda": "^8.10.42",
+    "pdf-lib": "^1.3.1",
+    "serverless": "1.64.0",
+    "typescript": "^3.7.5"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.2",
+    "serverless-domain-manager": "^3.3.1",
+    "serverless-offline": "^6.0.0-alpha.67",
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^6.2.1",
+    "webpack": "^4.41.6",
+    "webpack-node-externals": "^1.7.2"
+  }
+}

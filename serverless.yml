@@ -1,0 +1,54 @@
+service: serverless-lambda-pdflib
+frameworkVersion: "1.64.0"
+
+provider:
+  name: aws
+  versionFunctions: false
+  runtime: nodejs12.x
+  region: ap-southeast-2
+  stage: dev
+  profile: hotpuma
+
+  apiGateway:
+    binaryMediaTypes:
+      - "application/pdf"
+plugins:
+  - serverless-webpack
+  - serverless-domain-manager
+  - serverless-offline
+
+# layers:
+#   Pdflib:
+#     name: Pdflib
+#     compatibleRuntimes:
+#       - nodejs12.x
+#     description: Required for Pdflib
+#     package:
+#       artifact: layer/pdflib-layer.zip
+custom:
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules: true
+    #   forceExclude:
+    #     - pdflib
+    packager: "yarn"
+
+  serverless-offline:
+    location: .webpack/service
+
+  customDomain:
+    domainName: labs.mianio.com
+    basePath: pdflib
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+
+functions:
+  pdflib-demo:
+    handler: functions/demo.generate
+    # layers:
+    #   - { Ref: PdflibLambdaLayer }
+    events:
+      - http:
+          path: demo
+          method: get
+          cors: true
