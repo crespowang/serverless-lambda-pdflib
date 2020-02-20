@@ -17,20 +17,20 @@ plugins:
   - serverless-domain-manager
   - serverless-offline
 
-# layers:
-#   Pdflib:
-#     name: Pdflib
-#     compatibleRuntimes:
-#       - nodejs12.x
-#     description: Required for Pdflib
-#     package:
-#       artifact: layer/pdflib-layer.zip
+layers:
+  Pdflib:
+    name: Pdflib
+    compatibleRuntimes:
+      - nodejs12.x
+    description: Required for Pdflib
+    package:
+      artifact: layer/pdflib-layer.zip
 custom:
   webpack:
     webpackConfig: webpack.config.js
-    includeModules: true
-    #   forceExclude:
-    #     - pdflib
+    includeModules:
+      forceExclude:
+        - pdf-lib
     packager: "yarn"
 
   serverless-offline:
@@ -45,8 +45,8 @@ custom:
 functions:
   pdflib-demo:
     handler: functions/demo.generate
-    # layers:
-    #   - { Ref: PdflibLambdaLayer }
+    layers:
+      - { Ref: PdflibLambdaLayer }
     events:
       - http:
           path: demo
