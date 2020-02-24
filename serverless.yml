@@ -8,10 +8,26 @@ provider:
   region: ap-southeast-2
   stage: dev
   profile: hotpuma
-
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "s3:GetObject"
+        - "s3:PutObject"
+      Resource:
+        - arn:aws:s3:::pdflib-bucket
+        - arn:aws:s3:::pdflib-bucket/*
   apiGateway:
     binaryMediaTypes:
       - "application/pdf"
+  s3:
+    demoBucket:
+      name: pdflib-bucket
+      bucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      versioningConfiguration:
+        Status: Suspended
 plugins:
   - serverless-webpack
   - serverless-domain-manager
@@ -31,6 +47,7 @@ custom:
     includeModules:
       forceExclude:
         - pdf-lib
+        - aws-sdk
     packager: "yarn"
 
   serverless-offline:
@@ -43,8 +60,20 @@ custom:
     createRoute53Record: true
 
 functions:
-  pdflib-demo:
-    handler: functions/demo.generate
+  pdflib-demo-s3:
+    handler: functions/s3-demo.generate
+    layers:
+      - { Ref: PdflibLambdaLayer }
+    events:
+      - s3:
+          bucket: demoBucket
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+            - suffix: .pdf
+
+  pdflib-demo-http:
+    handler: functions/http-demo.generate
     layers:
       - { Ref: PdflibLambdaLayer }
     events:

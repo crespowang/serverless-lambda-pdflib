@@ -12,6 +12,7 @@
     "@middy/core": "^1.0.0-beta.6",
     "@middy/do-not-wait-for-empty-event-loop": "^1.0.0-beta.6",
     "@types/aws-lambda": "^8.10.42",
+    "aws-sdk": "^2.624.0",
     "pdf-lib": "^1.3.1",
     "serverless": "1.64.0",
     "typescript": "^3.7.5"

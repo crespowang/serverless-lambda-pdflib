@@ -9,7 +9,9 @@ module.exports = {
   node: {
     __dirname: true
   },
-
+  optimization: {
+    minimize: false
+  },
   externals: [nodeExternals()],
   module: {
     rules: [
