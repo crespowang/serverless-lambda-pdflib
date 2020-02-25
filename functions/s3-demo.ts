@@ -9,14 +9,17 @@ const downloadFromS3ToStream = (
   keyName: string
 ): Promise<any> => {
   return new Promise((resolve, reject) => {
-    s3.getObject({ Bucket: bucketName, Key: keyName }, (error, data) => {
-      if (error) {
-        console.log(error);
-        reject(error);
-      } else {
-        resolve(data.Body);
+    s3.getObject(
+      { Bucket: bucketName, Key: keyName },
+      (error, data: aws.S3.GetObjectOutput) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          resolve(data.Body);
+        }
       }
-    });
+    );
   });
 };
 
@@ -28,7 +31,7 @@ const saveToS3 = (
   return new Promise((resolve, reject) => {
     s3.putObject({ Bucket: bucketName, Key: keyName, Body }, (error, data) => {
       if (error) {
-        console.log(error);
+        console.error(error);
         reject(error);
       } else {
         resolve(data);

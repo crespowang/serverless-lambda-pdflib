@@ -8,17 +8,16 @@ provider:
   region: ap-southeast-2
   stage: dev
   profile: hotpuma
+  apiGateway:
+    binaryMediaTypes:
+      - "application/pdf"
   iamRoleStatements:
     - Effect: Allow
       Action:
         - "s3:GetObject"
         - "s3:PutObject"
       Resource:
-        - arn:aws:s3:::pdflib-bucket
         - arn:aws:s3:::pdflib-bucket/*
-  apiGateway:
-    binaryMediaTypes:
-      - "application/pdf"
   s3:
     demoBucket:
       name: pdflib-bucket
